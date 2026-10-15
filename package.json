@@ -1,53 +1,53 @@
 ﻿{
-  "name": "n8n-nodes-leanroute",
-  "version": "0.1.0",
-  "description": "n8n community node for Leanroute AI Gateway: 100+ LLMs, smart routing, semantic caching, and failover",
-  "keywords": [
-    "n8n-community-node-package",
-    "leanroute",
-    "ai-gateway",
-    "llm",
-    "deepseek",
-    "openai",
-    "claude"
-  ],
-  "license": "MIT",
-  "homepage": "https://leanroute.dev",
-  "author": {
-    "name": "Leanroute",
-    "email": "dev@leanroute.dev",
-    "url": "https://leanroute.dev"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/leanroute/n8n-nodes-leanroute.git"
-  },
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc && node -e \"require('fs').cpSync('nodes', 'dist/nodes', { recursive: true, filter: s => !s.endsWith('.ts') })\"",
-    "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
-  },
-  "files": [
-    "dist"
-  ],
-  "n8n": {
-    "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/LeanrouteApi.credentials.js"
-    ],
-    "nodes": [
-      "dist/nodes/Leanroute/LeanrouteChatModel.node.js",
-      "dist/nodes/Leanroute/Leanroute.node.js"
-    ]
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.0",
-    "n8n-workflow": "^1.25.0",
-    "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "@langchain/openai": "^0.3.0",
-    "@langchain/core": "^0.3.0"
-  }
+    "name":  "n8n-nodes-leanroute",
+    "version":  "0.1.3",
+    "description":  "n8n community node for Leanroute AI Gateway: 100+ LLMs, smart routing, semantic caching, and failover",
+    "keywords":  [
+                     "n8n-community-node-package",
+                     "leanroute",
+                     "ai-gateway",
+                     "llm",
+                     "deepseek",
+                     "openai",
+                     "claude"
+                 ],
+    "license":  "MIT",
+    "homepage":  "https://leanroute.dev",
+    "author":  {
+                   "name":  "Leanroute",
+                   "email":  "dev@leanroute.dev",
+                   "url":  "https://leanroute.dev"
+               },
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/mihir-repo/n8n-nodes-leanroute.git"
+                   },
+    "main":  "index.js",
+    "scripts":  {
+                    "build":  "tsc \u0026\u0026 node -e \"require(\u0027fs\u0027).cpSync(\u0027nodes\u0027, \u0027dist/nodes\u0027, { recursive: true, filter: s =\u003e !s.endsWith(\u0027.ts\u0027) })\"",
+                    "dev":  "tsc --watch",
+                    "prepublishOnly":  "npm run build"
+                },
+    "files":  [
+                  "dist"
+              ],
+    "n8n":  {
+                "n8nNodesApiVersion":  1,
+                "credentials":  [
+                                    "dist/credentials/LeanrouteApi.credentials.js"
+                                ],
+                "nodes":  [
+                              "dist/nodes/Leanroute/LeanrouteChatModel.node.js",
+                              "dist/nodes/Leanroute/Leanroute.node.js"
+                          ]
+            },
+    "devDependencies":  {
+                            "@types/node":  "^20.11.0",
+                            "n8n-workflow":  "^1.25.0",
+                            "typescript":  "^5.3.3"
+                        },
+    "dependencies":  {
+                         "@langchain/openai":  "^0.3.0",
+                         "@langchain/core":  "^0.3.0"
+                     }
 }
