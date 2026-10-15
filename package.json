@@ -1,6 +1,6 @@
 {
     "name": "n8n-nodes-leanroute",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "n8n community node for Leanroute AI Gateway: 100+ LLMs, smart routing, semantic caching, and failover",
     "keywords": [
         "n8n-community-node-package",
