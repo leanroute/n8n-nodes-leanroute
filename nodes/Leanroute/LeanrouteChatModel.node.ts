@@ -11,7 +11,7 @@ export class LeanrouteChatModel implements INodeType {
   description: INodeTypeDescription = {
     displayName: 'Leanroute Chat Model',
     name: 'leanrouteChatModel',
-    icon: 'file:leanroute.svg',
+    icon: 'file:leanroute.png',
     group: ['transform'],
     version: 1,
     description: 'Use 100+ models with smart routing & caching in n8n AI Agents',

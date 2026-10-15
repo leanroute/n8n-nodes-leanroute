@@ -10,7 +10,7 @@ export class Leanroute implements INodeType {
   description: INodeTypeDescription = {
     displayName: 'Leanroute',
     name: 'leanroute',
-    icon: 'file:leanroute.svg',
+    icon: 'file:leanroute.png',
     group: ['transform'],
     version: 1,
     description: 'Call 100+ LLMs with smart routing via Leanroute AI Gateway',

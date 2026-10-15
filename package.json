@@ -27,7 +27,7 @@
     },
     "main": "index.js",
     "scripts": {
-        "build": "tsc && node -e \"require('fs').cpSync('nodes', 'dist/nodes', { recursive: true, filter: s => !s.endsWith('.ts') })\"",
+        "build": "tsc && node -e \"const fs=require('fs');const f=s=>!s.endsWith('.ts');fs.cpSync('nodes','dist/nodes',{recursive:true,filter:f});fs.cpSync('credentials','dist/credentials',{recursive:true,filter:f})\"",
         "dev": "tsc --watch",
         "prepublishOnly": "npm run build"
     },

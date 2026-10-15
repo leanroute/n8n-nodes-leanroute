@@ -5,6 +5,7 @@ class LeanrouteApi {
     constructor() {
         this.name = 'leanrouteApi';
         this.displayName = 'Leanroute API';
+        this.icon = 'file:leanroute.png';
         this.documentationUrl = 'https://leanroute.dev/docs/api';
         this.properties = [
             {

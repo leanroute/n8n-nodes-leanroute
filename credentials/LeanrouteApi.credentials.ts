@@ -6,6 +6,7 @@
 export class LeanrouteApi implements ICredentialType {
   name = 'leanrouteApi';
   displayName = 'Leanroute API';
+  icon = 'file:leanroute.png' as const;
   documentationUrl = 'https://leanroute.dev/docs/api';
 
   properties: INodeProperties[] = [
