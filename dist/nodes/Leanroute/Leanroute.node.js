@@ -1,20 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Leanroute = void 0;
+const n8n_workflow_1 = require("n8n-workflow");
 class Leanroute {
     constructor() {
         this.description = {
             displayName: 'Leanroute',
             name: 'leanroute',
-            icon: 'file:leanroute.png',
+            icon: { light: 'file:leanroute.svg', dark: 'file:leanroute.dark.svg' },
             group: ['transform'],
             version: 1,
+            subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
             description: 'Call 100+ LLMs with smart routing via Leanroute AI Gateway',
             defaults: {
                 name: 'Leanroute',
             },
-            inputs: ['main'],
-            outputs: ['main'],
+            usableAsTool: true,
+            inputs: [n8n_workflow_1.NodeConnectionTypes.Main],
+            outputs: [n8n_workflow_1.NodeConnectionTypes.Main],
             credentials: [
                 {
                     name: 'leanrouteApi',
@@ -73,7 +76,7 @@ class Leanroute {
                         {
                             name: 'Get Many',
                             value: 'getAll',
-                            description: 'List all available models in the Leanroute catalog',
+                            description: 'List many available models in the Leanroute catalog',
                             action: 'List models',
                         },
                     ],
@@ -91,7 +94,7 @@ class Leanroute {
                             operation: ['complete'],
                         },
                     },
-                    description: 'Canonical model ID (e.g. deepseek/deepseek-v4-1-flash, anthropic/claude-sonnet-4-6)',
+                    description: 'Canonical model ID (e.g. deepseek/deepseek-v4-1-flash, anthropic/claude-sonnet-5). Full list: https://leanroute.dev/docs/models.',
                 },
                 {
                     displayName: 'Prompt',
@@ -124,11 +127,10 @@ class Leanroute {
             if (resource === 'chat' && operation === 'complete') {
                 const model = this.getNodeParameter('model', i);
                 const prompt = this.getNodeParameter('prompt', i);
-                const response = await this.helpers.httpRequest({
+                const response = await this.helpers.httpRequestWithAuthentication.call(this, 'leanrouteApi', {
                     method: 'POST',
                     url: `${baseUrl}/chat/completions`,
                     headers: {
-                        Authorization: `Bearer ${credentials.apiKey}`,
                         'Content-Type': 'application/json',
                     },
                     body: {
@@ -137,21 +139,19 @@ class Leanroute {
                     },
                     json: true,
                 });
-                returnData.push({ json: response });
+                returnData.push({ json: response, pairedItem: { item: i } });
             }
             else if (resource === 'model' && operation === 'getAll') {
-                const response = await this.helpers.httpRequest({
+                const response = await this.helpers.httpRequestWithAuthentication.call(this, 'leanrouteApi', {
                     method: 'GET',
                     url: `${baseUrl}/models`,
-                    headers: {
-                        Authorization: `Bearer ${credentials.apiKey}`,
-                    },
                     json: true,
                 });
-                returnData.push({ json: response });
+                returnData.push({ json: response, pairedItem: { item: i } });
             }
         }
         return [returnData];
     }
 }
 exports.Leanroute = Leanroute;
+//# sourceMappingURL=Leanroute.node.js.map

@@ -1,15 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LeanrouteChatModel = void 0;
+const n8n_workflow_1 = require("n8n-workflow");
 const openai_1 = require("@langchain/openai");
 class LeanrouteChatModel {
     constructor() {
         this.description = {
             displayName: 'Leanroute Chat Model',
             name: 'leanrouteChatModel',
-            icon: 'file:leanroute.png',
+            icon: { light: 'file:leanroute.svg', dark: 'file:leanroute.dark.svg' },
             group: ['transform'],
             version: 1,
+            subtitle: '={{$parameter["model"] === "custom" ? $parameter["customModel"] : $parameter["model"]}}',
             description: 'Use 100+ models with smart routing & caching in n8n AI Agents',
             defaults: {
                 name: 'Leanroute Chat Model',
@@ -21,7 +23,8 @@ class LeanrouteChatModel {
                 },
             },
             inputs: [],
-            outputs: ['ai_languageModel'],
+            outputs: [n8n_workflow_1.NodeConnectionTypes.AiLanguageModel],
+            outputNames: ['Model'],
             credentials: [
                 {
                     name: 'leanrouteApi',
@@ -37,36 +40,36 @@ class LeanrouteChatModel {
                     default: 'deepseek/deepseek-v4-1-flash',
                     options: [
                         {
-                            name: 'DeepSeek V4.1 Flash (Fast & Cheap)',
+                            name: 'Claude Sonnet 5 (Anthropic)',
+                            value: 'anthropic/claude-sonnet-5',
+                        },
+                        {
+                            name: 'Custom Model ID (Provider/Model)',
+                            value: 'custom',
+                        },
+                        {
+                            name: 'DeepSeek V4 Pro (DeepSeek)',
+                            value: 'deepseek/deepseek-v4-pro',
+                        },
+                        {
+                            name: 'DeepSeek V4.1 Flash (DeepSeek)',
                             value: 'deepseek/deepseek-v4-1-flash',
                         },
                         {
-                            name: 'DeepSeek Reasoner (Math & Reasoning)',
-                            value: 'deepseek/deepseek-reasoner',
+                            name: 'Gemini 3.8 Flash (Google)',
+                            value: 'google/gemini-3.8-flash',
                         },
                         {
-                            name: 'Claude 3.5 Sonnet (Anthropic)',
-                            value: 'anthropic/claude-sonnet-4-6',
+                            name: 'GPT-5.6 Luna (OpenAI)',
+                            value: 'openai/gpt-5.6-luna',
                         },
                         {
-                            name: 'GPT-4o Mini (OpenAI)',
-                            value: 'openai/gpt-4o-mini',
+                            name: 'GPT-5.6 Terra (OpenAI)',
+                            value: 'openai/gpt-5.6-terra',
                         },
                         {
-                            name: 'GPT-4o (OpenAI Flagship)',
-                            value: 'openai/gpt-4o',
-                        },
-                        {
-                            name: 'Gemini 2.5 Flash (Google)',
-                            value: 'google/gemini-2.5-flash',
-                        },
-                        {
-                            name: 'Qwen Plus (Alibaba)',
-                            value: 'qwen/qwen-plus',
-                        },
-                        {
-                            name: 'Custom Model ID (provider/model)',
-                            value: 'custom',
+                            name: 'Qwen 3.8 Flash (Alibaba)',
+                            value: 'qwen/qwen3.8-flash',
                         },
                     ],
                 },
@@ -80,7 +83,7 @@ class LeanrouteChatModel {
                             model: ['custom'],
                         },
                     },
-                    placeholder: 'e.g. meta/muse-spark-1.2',
+                    placeholder: 'e.g. meta/muse-spark-1.3',
                     description: 'Canonical model ID with provider prefix from https://leanroute.dev/docs/models',
                 },
                 {
@@ -107,14 +110,14 @@ class LeanrouteChatModel {
                             name: 'maxTokens',
                             type: 'number',
                             default: 4096,
-                            description: 'Maximum tokens to generate.',
+                            description: 'Maximum tokens to generate',
                         },
                         {
                             displayName: 'Disable Gateway Model Swaps',
                             name: 'explicitRouting',
                             type: 'boolean',
                             default: false,
-                            description: 'If enabled, sends x-gateway-routing: explicit to prevent cheaper-model substitutions.',
+                            description: 'Whether to send x-gateway-routing: explicit so the gateway never substitutes a cheaper model',
                         },
                     ],
                 },
@@ -122,6 +125,7 @@ class LeanrouteChatModel {
         };
     }
     async supplyData(itemIndex) {
+        var _a;
         const credentials = await this.getCredentials('leanrouteApi');
         const modelSelection = this.getNodeParameter('model', itemIndex);
         const customModel = this.getNodeParameter('customModel', itemIndex, '');
@@ -138,7 +142,7 @@ class LeanrouteChatModel {
                 defaultHeaders: customHeaders,
             },
             modelName,
-            temperature: options.temperature ?? 0.7,
+            temperature: (_a = options.temperature) !== null && _a !== void 0 ? _a : 0.7,
             maxTokens: options.maxTokens,
         });
         return {
@@ -147,3 +151,4 @@ class LeanrouteChatModel {
     }
 }
 exports.LeanrouteChatModel = LeanrouteChatModel;
+//# sourceMappingURL=LeanrouteChatModel.node.js.map

@@ -1,0 +1,53 @@
+# Publishes n8n-nodes-leanroute to npm on every version tag push.
+#
+# n8n requires community nodes (from 2026-05-01) to be published from
+# GitHub Actions with an npm provenance statement. This is n8n's own
+# workflow from n8n-io/n8n-nodes-starter, unchanged apart from comments.
+#
+# One-time setup (OIDC trusted publishing, no long-lived token):
+#   npmjs.com -> n8n-nodes-leanroute -> Settings -> Trusted Publishers ->
+#   Add a publisher -> GitHub Actions:
+#     Repository owner: leanroute
+#     Repository name:  n8n-nodes-leanroute
+#     Workflow name:    publish.yml
+#
+# Fallback: put a granular npm token in the repo secret NPM_TOKEN.
+#
+# Release: run `npm run release` locally. It lints, builds, bumps the
+# version, updates CHANGELOG.md, commits, tags and pushes; the tag push
+# triggers this workflow.
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        run: |
+          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

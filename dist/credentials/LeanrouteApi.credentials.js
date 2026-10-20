@@ -5,8 +5,8 @@ class LeanrouteApi {
     constructor() {
         this.name = 'leanrouteApi';
         this.displayName = 'Leanroute API';
-        this.icon = 'file:leanroute.png';
-        this.documentationUrl = 'https://leanroute.dev/docs/api';
+        this.icon = { light: 'file:leanroute.svg', dark: 'file:leanroute.dark.svg' };
+        this.documentationUrl = 'https://leanroute.dev/docs/integrations/n8n';
         this.properties = [
             {
                 displayName: 'API Key',
@@ -17,7 +17,7 @@ class LeanrouteApi {
                 },
                 default: '',
                 required: true,
-                description: 'Your Leanroute API Key starting with gw_live_* from https://leanroute.dev',
+                description: 'Your Leanroute API key (starts with gw_live_), from https://leanroute.dev/dashboard/keys',
             },
             {
                 displayName: 'Base URL',
@@ -25,9 +25,24 @@ class LeanrouteApi {
                 type: 'string',
                 default: 'https://api.leanroute.dev/v1',
                 required: true,
-                description: 'The Leanroute OpenAI-compatible API gateway endpoint',
+                description: 'The Leanroute OpenAI-compatible API endpoint',
             },
         ];
+        this.authenticate = {
+            type: 'generic',
+            properties: {
+                headers: {
+                    Authorization: '=Bearer {{$credentials.apiKey}}',
+                },
+            },
+        };
+        this.test = {
+            request: {
+                baseURL: '={{$credentials.baseUrl}}',
+                url: '/models',
+            },
+        };
     }
 }
 exports.LeanrouteApi = LeanrouteApi;
+//# sourceMappingURL=LeanrouteApi.credentials.js.map
